@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,21 +53,23 @@ fun CustomAuthTextField(
             fontSize = 20.sp,
             fontWeight = FontWeight.Medium,
             color = Color.Black
-        )
+        ),
+        visualTransformation = if(title == "pw") PasswordVisualTransformation() else VisualTransformation.None,
+        singleLine = true
     ) {
         TextFieldDefaults.DecorationBox(
             value = value,
             colors = textFieldDefaultsColor(),
             innerTextField = it,
             enabled = true,
-            singleLine = false,
+            singleLine = true,
             visualTransformation = VisualTransformation.None,
             interactionSource = interactionSource,
-            contentPadding = PaddingValues(0.dp),
+            contentPadding = PaddingValues(0.dp)
         )
     }
     HorizontalDivider(modifier = Modifier
-        .padding(top = 4.dp)
+        .padding(top = 4.dp, start = 8.dp, end = 8.dp)
         .fillMaxWidth(),
         color = FontDarkGray,
         thickness = 1.dp

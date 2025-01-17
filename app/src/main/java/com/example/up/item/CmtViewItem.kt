@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,9 +37,9 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun CmtViewItem(
     cmt : Cmt,
-    hideTxt : Boolean = false
+    hideTxt : Boolean = false,
+    onClick : () -> Unit = {}
 ){
-
     val cmtLstSize = cmt.cmtLst?.size ?:  0
 
     Row(modifier = Modifier
@@ -89,7 +90,8 @@ fun CmtViewItem(
             // 답글이 없거나 hideTxt가 true면 표시안함
             if (cmt.cmtLst != null && !hideTxt){
                 Text(modifier = Modifier
-                    .padding(top = 8.dp),
+                    .padding(top = 8.dp)
+                    .clickable { onClick() },
                     text = "답글${
                         if(cmtLstSize != 0){
                             " ${cmtLstSize}개"
@@ -110,7 +112,5 @@ fun CmtViewItem(
 @Preview(showBackground = false)
 @Composable
 fun ShowCmtViewItem(){
-    UPTheme {
-        CmtViewItem(cmt = LstInfo.cmtLst[0])
-    }
+    CmtViewItem(cmt = LstInfo.cmtLst[0])
 }

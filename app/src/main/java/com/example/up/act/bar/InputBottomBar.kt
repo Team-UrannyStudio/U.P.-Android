@@ -1,4 +1,4 @@
-package com.example.up.act.cmt
+package com.example.up.act.bar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -40,7 +39,6 @@ import com.example.up.act.itg.PlaceHolderTxt
 import com.example.up.act.itg.textFieldDefaultsColor
 import com.example.up.ui.theme.FontDarkGray
 import com.example.up.ui.theme.FontGray
-import kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

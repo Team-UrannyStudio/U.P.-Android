@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -23,17 +26,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.up.act.bar.InputBottomBar
+import com.example.up.act.bar.TopBar
 import com.example.up.data.LstInfo
 import com.example.up.data.cls.cmt.Cmt
 import com.example.up.item.CmtViewItem
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun InCmtView(parent: Cmt) {
+fun InCmtView(
+    parent: Cmt,
+    navController : NavHostController
+) {
     var cmtTxt by remember { mutableStateOf("") }
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize(),
         bottomBar = {
             InputBottomBar(
                 value = cmtTxt,
@@ -41,11 +52,15 @@ fun InCmtView(parent: Cmt) {
             )
         }
     ) { innerPadding ->
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+            TopBar(
+                navController = navController,
+                bool = 1
+            )
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -78,10 +93,17 @@ fun InCmtView(parent: Cmt) {
                         }
                     }
                 } else {
+                    Spacer(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(16.dp)
+                    )
+                    CmtViewItem(cmt = parent,
+                        hideTxt = true
+                    )
                     Text(
                         modifier = Modifier
-                            .padding(top = 24.dp),
-                        text = "댓글이 없습니다.",
+                            .padding(top = 24.dp, start = 8.dp),
+                        text = "답글이 없습니다",
                         fontSize = 16.sp,
                         color = Color.Gray
                     )
@@ -91,10 +113,11 @@ fun InCmtView(parent: Cmt) {
     }
 }
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun ShowInCmtView(){
-    InCmtView(LstInfo.cmtLst[0])
+    InCmtView(parent = LstInfo.cmtLst[0],
+        navController = rememberNavController()
+    )
 }

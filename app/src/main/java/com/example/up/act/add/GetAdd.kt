@@ -32,6 +32,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.up.act.bar.TopBar
 import com.example.up.act.itg.AddElement
 import com.example.up.act.itg.CustomTextField
 import com.example.up.data.LstInfo
@@ -39,7 +42,7 @@ import com.example.up.ui.theme.FontDarkGray
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun GetAddView(){
+fun GetAddView(navController: NavHostController){
 
     val scrollState = rememberScrollState()
 
@@ -59,6 +62,7 @@ fun GetAddView(){
                 .fillMaxWidth()
                 .height(60.dp),
                 onClick = {
+                    navController.popBackStack()
                     Log.d("Click", "Clear")
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -80,6 +84,7 @@ fun GetAddView(){
             .fillMaxSize()
             .verticalScroll(scrollState)
         ) {
+            TopBar(navController = navController, bool = 1)
             Box(modifier = Modifier
                 .padding(top = 24.dp, start = 24.dp, end = 24.dp, bottom = 20.dp)
                 .fillMaxWidth()
@@ -96,7 +101,8 @@ fun GetAddView(){
                 value = title,
                 onValueChange = { title = it },
                 holder = "제목을 입력하기...",
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
             )
             HorizontalDivider(modifier = Modifier
                 .padding(top = 4.dp, start = 24.dp, end = 24.dp)
@@ -108,37 +114,43 @@ fun GetAddView(){
                 title = "카테고리",
                 onValueChange = { selectCtgIndex = it as Int },
                 selectIndex = selectCtgIndex,
-                categoryLst = LstInfo.rallyNGetCtgLst
+                categoryLst = LstInfo.rallyNGetCtgLst,
+                modifier = Modifier
             )
             AddElement(
                 title = "주요 업무",
                 value = work,
                 onValueChange = { work = it as String},
-                holder = "주최자 입력하기..."
+                holder = "주최자 입력하기...",
+                modifier = Modifier
             )
             AddElement(
                 title = "자격 요건",
                 value = qualification,
                 onValueChange = { qualification = it as String},
-                holder = "자격 요건 입력하기..."
+                holder = "자격 요건 입력하기...",
+                modifier = Modifier
             )
             AddElement(
                 title = "우대 사항",
                 value = preference,
                 onValueChange = {preference = (it as String)},
-                holder = "우대 사항 입력하기..."
+                holder = "우대 사항 입력하기...",
+                modifier = Modifier
             )
             AddElement(
                 title = "문의처 링크",
                 value = contact,
                 onValueChange = {contact = (it as String)},
-                holder = "문의처 링크 입력하기..."
+                holder = "문의처 링크 입력하기...",
+                modifier = Modifier
             )
             AddElement(
                 title = "소개글",
                 value = introTxt,
                 onValueChange = {introTxt = (it as String)},
-                holder = "소개글 입력하기..."
+                holder = "소개글 입력하기...",
+                modifier = Modifier
             )
         }
     }
@@ -148,5 +160,5 @@ fun GetAddView(){
 @Preview(showBackground = true)
 @Composable
 fun ShowGetAddView(){
-    GetAddView()
+    GetAddView(rememberNavController())
 }

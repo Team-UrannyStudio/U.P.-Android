@@ -3,8 +3,10 @@ package com.example.up.item
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,26 +30,37 @@ import com.example.up.ui.theme.FontDarkGray
 import com.example.up.ui.theme.UPTheme
 
 @Composable
-fun PostCmtItem(modifier: Modifier, imageUrl : String, body : String){
-    Box(modifier = Modifier
-        .background(Color.White, shape = RoundedCornerShape(12.dp))
+fun PostCmtItem(modifier: Modifier,
+                imageUrl : String,
+                body : String,
+                showImg : Boolean = true,
+                onClick : () -> Unit = {}
+){
+    Box(modifier = modifier
+        .background(Color.White,
+            shape = RoundedCornerShape(12.dp))
+        .clip(RoundedCornerShape(12.dp))
         .fillMaxWidth()
+        .clickable { onClick() }
         .height(56.dp),
         contentAlignment = Alignment.Center
     ){
         Row(modifier = Modifier
+            .fillMaxWidth()
             .padding(horizontal = 12.dp)
         ) {
-            Image(modifier = Modifier
-                .size(28.dp)
-                .background(Color.White)
-                .clip(shape = CircleShape)
-                .border(1.dp, color = FontDarkGray, shape = CircleShape),
-                imageVector = Icons.Default.Person,
-                contentDescription = "Person"
-            )
+            if(showImg){
+                Image(modifier = Modifier
+                    .size(28.dp)
+                    .background(Color.White)
+                    .clip(shape = CircleShape)
+                    .border(1.dp, color = FontDarkGray, shape = CircleShape),
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Person"
+                )
+            }
             Text(modifier = Modifier
-                .padding(start = 8.dp),
+                .padding(start = if (showImg) 8.dp else 0.dp),
                 text = body,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

@@ -20,33 +20,47 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.up.data.LstInfo
+import androidx.navigation.NavHostController
+import com.example.up.act.bar.InputBottomBar
+import com.example.up.act.bar.TopBar
+import com.example.up.data.cls.cmt.Cmt
+import com.example.up.data.cls.main.vm.cmt.CmtVM
 import com.example.up.item.CmtViewItem
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CmtView(){
+fun CmtView(
+    navController: NavHostController,
+    cmtLst: List<Cmt>,
+    cmtVM: CmtVM,
+    parentNavController: NavHostController
+){
     var cmtTxt by remember { mutableStateOf("") }
 
-    Scaffold(modifier = Modifier.fillMaxSize(),
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize(),
         bottomBar = {
             InputBottomBar(
                 value = cmtTxt,
-                onValueChange = {cmtTxt = it}
+                onValueChange = { cmtTxt = it }
             )
         }
-    ) { innerPadding ->
+    ) {
         Box(modifier = Modifier
+            .padding(it)
             .fillMaxSize()
-            .padding(innerPadding)
         ) {
             Column(modifier = Modifier
                 .fillMaxSize()
                 .padding(start = 20.dp, end = 20.dp)
             ) {
+                TopBar(navController = parentNavController,
+                    bool = 1,
+                    minusDp = 20
+                )
                 Text(modifier = Modifier
                     .padding(top = 24.dp, start = 8.dp),
                     text = "댓글",
@@ -60,18 +74,15 @@ fun CmtView(){
                     contentPadding = PaddingValues(bottom = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    itemsIndexed(LstInfo.cmtLst){ index, it ->
-                        CmtViewItem(cmt = it)
+                    itemsIndexed(cmtLst){ index, it ->
+                        CmtViewItem(
+                            cmt = it
+                        ) {
+                            navController.navigate("INCMT/${index}")
+                        }
                     }
                 }
             }
         }
     }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true)
-@Composable
-fun ShowCmtView(){
-    CmtView()
 }

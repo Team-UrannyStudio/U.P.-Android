@@ -4,6 +4,7 @@ import com.example.up.data.cls.cmt.Cmt
 import java.time.LocalDateTime
 
 data class GetPst(
+    val id : Long,
     val title: String,
     val category: String,
     val imgUrl: String,
@@ -28,10 +29,24 @@ data class GetPst(
         PostElementData(title = "우대 사항", body = preference),
         PostElementData(title = "문의처 링크", body = contact, hyper = true),
         PostElementData(title = "소개글", body = introTxt),
-        PostElementData(
-            title = "댓글${if(!(cmtLst.size == 0)) cmtLst.size else ""}",
-            body = if(!(cmtLst.size == 0)) cmtLst[0].body else "댓글이 없습니다",
-            imgUrl = if(!(cmtLst.size == 0)) cmtLst[0].imgUrl else null
-        )
+    )
+
+    override fun toCmtLst(): List<Cmt> {
+        return cmtLst
+    }
+
+    fun toGetLst() : GetPst = GetPst(
+        id = id,
+        title = title,
+        category = category,
+        imgUrl = imgUrl,
+        work = work,
+        qualification = qualification,
+        preference = preference,
+        introTxt = introTxt,
+        contact = contact,
+        master = master,
+        cmtLst = cmtLst,
+        createTime = createTime
     )
 }

@@ -28,7 +28,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.up.act.bar.TopBar
 import com.example.up.data.LstInfo
 import com.example.up.item.CategoryItem
 import com.example.up.item.IntroItem
@@ -36,14 +40,27 @@ import com.example.up.item.PostItem
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun PageView(modifier : Modifier, type : Char) {
+fun PageView(modifier : Modifier,
+             type : Char,
+             navController : NavHostController,
+             onClick : (String) -> Unit,
+             onAddClick : (String) -> Unit
+) {
 
     var searchTxt by remember { mutableStateOf("") }
+    var selectIndex by remember { mutableStateOf(0)}
 
     Column(modifier = modifier
         .fillMaxSize(1f)
     ){
+        TopBar(2,
+            navController
+        ){
+            onAddClick("ADD/${type}")
+        }
+
         LazyRow(modifier = Modifier
+            .padding(top = 24.dp)
             .fillMaxWidth(1f),
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -51,20 +68,20 @@ fun PageView(modifier : Modifier, type : Char) {
             itemsIndexed(
                 if(type == 'R' || type == 'G') LstInfo.rallyNGetCtgLst
                 else LstInfo.comCtgLst,
-            ){ i, data->
+            ){ index, data->
                 CategoryItem(
                     text = data.title,
-                    backColor = data.backColor,
-                    textColor = data.txtColor
+                    backColor = if(selectIndex == index) Color.Black else Color.White,
+                    textColor = if(selectIndex == index) Color.White else Color.Black
                 ) { item ->
-                    Log.d("Click", "Tag")
+                    selectIndex = index
                 }
             }
         }
         TextField( modifier = Modifier
             .padding(top = 16.dp, start = 12.dp, end = 12.dp)
             .fillMaxWidth(1f),
-            value = searchTxt ,
+            value = searchTxt,
             onValueChange = {
                 searchTxt = it
             },
@@ -99,42 +116,61 @@ fun PageView(modifier : Modifier, type : Char) {
         ) {
             when(type){
                 'C' -> {
-                    items(LstInfo.comPostLst){ i ->
+                    itemsIndexed(LstInfo.comPostLst){ index, data ->
                         PostItem(
-                            title = i.title,
-                            category = i.category,
-                            dateTime = i.createTime,
-                            user = i.master,
-                            cmtLst = i.cmtLst
-                        )
+                            title = data.title,
+                            category = data.category,
+                            dateTime = data.createTime,
+                            user = data.master,
+                            cmtLst = data.cmtLst
+                        ){
+                            onClick("ComPost/${index}")
+                        }
                     }
                 }
                 'G' -> {
-                    items(LstInfo.getLst){ i ->
+                    itemsIndexed(LstInfo.getLst){ index, data ->
                         IntroItem(
-                            title = i.title,
-                            master = i.master,
-                            category = i.category ,
-                            imgUrl = i.imgUrl,
-                            work = i.work,
+                            title = data.title,
+                            master = data.master,
+                            category = data.category ,
+                            imgUrl = data.imgUrl,
+                            work = data.work,
                             checkHome = true
-                        )
+                        ) {
+                            onClick("GetPost/${index}")
+                        }
                     }
                 }
                 'R' -> {
-                    items(LstInfo.rallyLst){ i ->
+                    itemsIndexed(LstInfo.rallyLst){ index, data ->
                         IntroItem(
-                            title = i.title,
-                            master = i.master,
-                            category = i.category,
-                            imgUrl = i.imgUrl,
-                            startTime = i.startTime,
-                            endTime = i.endTime,
+                            title = data.title,
+                            master = data.master,
+                            category = data.category,
+                            imgUrl = data.imgUrl,
+                            startTime = data.startTime,
+                            endTime = data.endTime,
                             checkHome = true
-                        )
+                        ) {
+                            onClick("RallyPost/${index}")
+                        }
                     }
                 }
             }
         }
     }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview(showBackground = false)
+@Composable
+fun ShowPageView(){
+    val navController = rememberNavController()
+    PageView(Modifier,
+        'R',
+        navController,
+        onClick = {},
+        onAddClick = {}
+    )
 }

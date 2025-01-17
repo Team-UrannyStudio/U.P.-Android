@@ -13,14 +13,175 @@ import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 object LstInfo {
+
+    val cmtLst =
+        arrayListOf(
+        Cmt(
+            user = "Uranny",
+            time = LocalDateTime.of(2024, 12, 12, 12,34, 12),
+            imgUrl = "String",
+            body = "weroiqgonqwuviewymcuyuiqmf",
+            cmtLst = arrayListOf(
+                Cmt(
+                    user = "Uranny",
+                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+                    imgUrl = "String",
+                    body = "weroiqgonqwuviewymcuyuiqmf"
+                ),
+                Cmt(
+                    user = "Uranny",
+                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+                    imgUrl = "String",
+                    body = "weroiqgonqwuviewymcuyuiqmf"
+                ),
+                Cmt(
+                    user = "Uranny",
+                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+                    imgUrl = "String",
+                    body = "weroiqgonqwuviewymcuyuiqmf"
+                ),
+                Cmt(
+                    user = "Uranny",
+                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+                    imgUrl = "String",
+                    body = "weroiqgonqwuviewymcuyuiqmf"
+                ),
+                Cmt(
+                    user = "Uranny",
+                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+                    imgUrl = "String",
+                    body = "weroiqgonqwuviewymcuyuiqmf"
+                ),
+                Cmt(
+                    user = "Uranny",
+                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+                    imgUrl = "String",
+                    body = "weroiqgonqwuviewymcuyuiqmf"
+                ),
+                Cmt(
+                    user = "Uranny",
+                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+                    imgUrl = "String",
+                    body = "weroiqgonqwuviewymcuyuiqmf"
+                ),
+                Cmt(
+                    user = "Uranny",
+                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+                    imgUrl = "String",
+                    body = "weroiqgonqwuviewymcuyuiqmf"
+                ),
+                Cmt(
+                    user = "Uranny",
+                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+                    imgUrl = "String",
+                    body = "weroiqgonqwuviewymcuyuiqmf"
+                )
+            )
+        ),
+        Cmt(
+            user = "Uranny",
+            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+            imgUrl = "String",
+            body = "weroiqgonqwuviewymcuyuiqmf",
+            cmtLst = arrayListOf(
+
+            )
+        ),
+        Cmt(
+            user = "Uranny",
+            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+            imgUrl = "String",
+            body = "weroiqgonqwuviewymcuyuiqmf",
+            cmtLst = arrayListOf()
+        ),
+        Cmt(
+            user = "Uranny",
+            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+            imgUrl = "String",
+            body = "weroiqgonqwuviewymcuyuiqmf",
+            cmtLst = arrayListOf()
+        ),
+        Cmt(
+            user = "Uranny",
+            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+            imgUrl = "String",
+            body = "weroiqgonqwuviewymcuyuiqmf",
+            cmtLst = arrayListOf()
+        ),
+        Cmt(
+            user = "Uranny",
+            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+            imgUrl = "String",
+            body = "weroiqgonqwuviewymcuyuiqmf",
+            cmtLst = arrayListOf()
+        ),
+        Cmt(
+            user = "Uranny",
+            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+            imgUrl = "String",
+            body = "weroiqgonqwuviewymcuyuiqmf",
+            cmtLst = arrayListOf()
+        ),
+        Cmt(
+            user = "Uranny",
+            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+            imgUrl = "String",
+            body = "weroiqgonqwuviewymcuyuiqmf",
+            cmtLst = arrayListOf()
+        ),
+        Cmt(
+            user = "Uranny",
+            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+            imgUrl = "String",
+            body = "weroiqgonqwuviewymcuyuiqmf",
+            cmtLst = arrayListOf()
+        ),
+        Cmt(
+            user = "Uranny",
+            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+            imgUrl = "String",
+            body = "weroiqgonqwuviewymcuyuiqmf",
+            cmtLst = arrayListOf()
+        ),
+        Cmt(
+            user = "Uranny",
+            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+            imgUrl = "String",
+            body = "weroiqgonqwuviewymcuyuiqmf",
+            cmtLst = arrayListOf()
+        ),
+        Cmt(
+            user = "Uranny",
+            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+            imgUrl = "String",
+            body = "weroiqgonqwuviewymcuyuiqmf",
+            cmtLst = arrayListOf()
+        ),
+        Cmt(
+            user = "Uranny",
+            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+            imgUrl = "String",
+            body = "weroiqgonqwuviewymcuyuiqmf",
+            cmtLst = arrayListOf()
+        ),
+        Cmt(
+            user = "Uranny",
+            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
+            imgUrl = "String",
+            body = "weroiqgonqwuviewymcuyuiqmf",
+            cmtLst = arrayListOf()
+        )
+    )
+
     // 대회 모집 글
     val rallyLst = arrayListOf<RallyPst>().apply {
         repeat(10){ i->
             add(
                 RallyPst(
+                    id = i.toLong(),
                     category = "IT-소프트웨어",
                     imgUrl = "https://media.istockphoto.com/id/2039918088/ko/%EC%82%AC%EC%A7%84/%EC%A7%91%EC%97%90%EC%84%9C-%EC%95%84%EB%8A%91%ED%95%9C-%EC%86%8C%ED%8C%8C%EC%97%90%EC%84%9C-%ED%83%9C%EB%B8%94%EB%A6%BF%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%ED%96%89%EB%B3%B5%ED%95%9C-%EC%95%84%ED%94%84%EB%A6%AC%EC%B9%B4%EA%B3%84-%EB%AF%B8%EA%B5%AD%EC%9D%B8-%EC%97%AC%EC%84%B1.jpg?s=1024x1024&w=is&k=20&c=YHUO_rEadNQ9HLUqnmAOa6SVwAYI-JMo40cXnwTgmI4=",
-                    title = "같이 스택 나갈 서버, 웹, 앱,",
+                    title = "같이 스택 나갈 서버, 웹, 앱${i}",
                     master = "sk telecom",
                     participant = "아무나",
                     startTime = LocalDate.of(2024, 10, 16),
@@ -43,7 +204,8 @@ object LstInfo {
         repeat(10){ i->
             add(
                 GetPst(
-                    title = "같이 스택 나갈 서버, 웹, 앱,",
+                    id = i.toLong(),
+                    title = "같이 스택 나갈 서버, 웹, 앱",
                     category = "IT-소프트웨어",
                     imgUrl = "https://media.istockphoto.com/id/2039918088/ko/%EC%82%AC%EC%A7%84/%EC%A7%91%EC%97%90%EC%84%9C-%EC%95%84%EB%8A%91%ED%95%9C-%EC%86%8C%ED%8C%8C%EC%97%90%EC%84%9C-%ED%83%9C%EB%B8%94%EB%A6%BF%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%ED%96%89%EB%B3%B5%ED%95%9C-%EC%95%84%ED%94%84%EB%A6%AC%EC%B9%B4%EA%B3%84-%EB%AF%B8%EA%B5%AD%EC%9D%B8-%EC%97%AC%EC%84%B1.jpg?s=1024x1024&w=is&k=20&c=YHUO_rEadNQ9HLUqnmAOa6SVwAYI-JMo40cXnwTgmI4=",
                     work = "주요업무 : 서비스 개발",
@@ -52,15 +214,7 @@ object LstInfo {
                     introTxt = "우리 프로젝트 좋아요",
                     contact = "https://uranny.com",
                     master = "sk telecom",
-                    cmtLst = arrayListOf(
-                        Cmt(
-                            user = "Uranny",
-                            time = LocalDateTime.of(2024, 10, 20, 21, 21, 21),
-                            imgUrl = "string",
-                            body = "zzzzzzzzzzzzzzzzzZzzzzzzzzZZzzZzzzZzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
-                            cmtLst = arrayListOf()
-                        )
-                    ),
+                    cmtLst = cmtLst,
                     createTime = LocalDateTime.of(2024, 12, 2, 3, 2, 2)
                 )
             )
@@ -71,12 +225,13 @@ object LstInfo {
         repeat(10){ i->
             add(
                 ComPst(
+                    id = i.toLong(),
                     title = "야이 게이들아",
                     category = "공지사항",
                     imageUrl = "https://uranny.com",
                     body = "게이들",
                     master = "Uranny",
-                    cmtLst = arrayListOf(),
+                    cmtLst = cmtLst,
                     createTime = LocalDateTime.of(2024, 12, 2, 3, 2, 2)
                 )
             )
@@ -269,164 +424,4 @@ object LstInfo {
             txtColor = Color.White
         )
     )
-
-    val cmtLst = arrayListOf(
-        Cmt(
-            user = "Uranny",
-            time = LocalDateTime.of(2024, 12, 12, 12,34, 12),
-            imgUrl = "String",
-            body = "weroiqgonqwuviewymcuyuiqmf",
-            cmtLst = arrayListOf(
-                Cmt(
-                    user = "Uranny",
-                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-                    imgUrl = "String",
-                    body = "weroiqgonqwuviewymcuyuiqmf"
-                ),
-                Cmt(
-                    user = "Uranny",
-                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-                    imgUrl = "String",
-                    body = "weroiqgonqwuviewymcuyuiqmf"
-                ),
-                Cmt(
-                    user = "Uranny",
-                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-                    imgUrl = "String",
-                    body = "weroiqgonqwuviewymcuyuiqmf"
-                ),
-                Cmt(
-                    user = "Uranny",
-                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-                    imgUrl = "String",
-                    body = "weroiqgonqwuviewymcuyuiqmf"
-                ),
-                Cmt(
-                    user = "Uranny",
-                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-                    imgUrl = "String",
-                    body = "weroiqgonqwuviewymcuyuiqmf"
-                ),
-                Cmt(
-                    user = "Uranny",
-                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-                    imgUrl = "String",
-                    body = "weroiqgonqwuviewymcuyuiqmf"
-                ),
-                Cmt(
-                    user = "Uranny",
-                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-                    imgUrl = "String",
-                    body = "weroiqgonqwuviewymcuyuiqmf"
-                ),
-                Cmt(
-                    user = "Uranny",
-                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-                    imgUrl = "String",
-                    body = "weroiqgonqwuviewymcuyuiqmf"
-                ),
-                Cmt(
-                    user = "Uranny",
-                    time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-                    imgUrl = "String",
-                    body = "weroiqgonqwuviewymcuyuiqmf"
-                )
-            )
-        ),
-        Cmt(
-            user = "Uranny",
-            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-            imgUrl = "String",
-            body = "weroiqgonqwuviewymcuyuiqmf",
-            cmtLst = arrayListOf(
-
-            )
-        ),
-        Cmt(
-            user = "Uranny",
-            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-            imgUrl = "String",
-            body = "weroiqgonqwuviewymcuyuiqmf",
-            cmtLst = arrayListOf()
-        ),
-        Cmt(
-            user = "Uranny",
-            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-            imgUrl = "String",
-            body = "weroiqgonqwuviewymcuyuiqmf",
-            cmtLst = arrayListOf()
-        ),
-        Cmt(
-            user = "Uranny",
-            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-            imgUrl = "String",
-            body = "weroiqgonqwuviewymcuyuiqmf",
-            cmtLst = arrayListOf()
-        ),
-        Cmt(
-            user = "Uranny",
-            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-            imgUrl = "String",
-            body = "weroiqgonqwuviewymcuyuiqmf",
-            cmtLst = arrayListOf()
-        ),
-        Cmt(
-            user = "Uranny",
-            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-            imgUrl = "String",
-            body = "weroiqgonqwuviewymcuyuiqmf",
-            cmtLst = arrayListOf()
-        ),
-        Cmt(
-            user = "Uranny",
-            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-            imgUrl = "String",
-            body = "weroiqgonqwuviewymcuyuiqmf",
-            cmtLst = arrayListOf()
-        ),
-        Cmt(
-            user = "Uranny",
-            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-            imgUrl = "String",
-            body = "weroiqgonqwuviewymcuyuiqmf",
-            cmtLst = arrayListOf()
-        ),
-        Cmt(
-            user = "Uranny",
-            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-            imgUrl = "String",
-            body = "weroiqgonqwuviewymcuyuiqmf",
-            cmtLst = arrayListOf()
-        ),
-        Cmt(
-            user = "Uranny",
-            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-            imgUrl = "String",
-            body = "weroiqgonqwuviewymcuyuiqmf",
-            cmtLst = arrayListOf()
-        ),
-        Cmt(
-            user = "Uranny",
-            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-            imgUrl = "String",
-            body = "weroiqgonqwuviewymcuyuiqmf",
-            cmtLst = arrayListOf()
-        ),
-        Cmt(
-            user = "Uranny",
-            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-            imgUrl = "String",
-            body = "weroiqgonqwuviewymcuyuiqmf",
-            cmtLst = arrayListOf()
-        ),
-        Cmt(
-            user = "Uranny",
-            time = LocalDateTime.of(2024, 12, 12, 12,12, 12),
-            imgUrl = "String",
-            body = "weroiqgonqwuviewymcuyuiqmf",
-            cmtLst = arrayListOf()
-        )
-    )
-
-
 }

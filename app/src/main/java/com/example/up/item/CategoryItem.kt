@@ -20,16 +20,20 @@ import com.example.up.ui.theme.UPTheme
 @Composable
 fun CategoryItem(
     text : String,
+    isClick : Boolean = true,
     backColor : Color = Color.White,
     textColor : Color = Color.Black,
-    onItemClick : (String) -> Unit
+    onItemClick : (String) -> Unit,
     ){
-    Box(modifier = Modifier
+    Box(modifier = if(isClick){ Modifier
         .clip(RoundedCornerShape(12.dp))
         .background(backColor)
-        .clickable {
-            onItemClick(text)
-        }
+        .clickable { onItemClick(text) }
+    } else {
+        Modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(backColor)
+    }
     ){
         Text(
             modifier = Modifier

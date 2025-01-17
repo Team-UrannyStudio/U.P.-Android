@@ -6,18 +6,18 @@ data class RallyAddData(
     var apply : String = "",
     var cost : String = "",
     var price : String = "",
-    var homePageLink : String = "",
+    var homeLink : String = "",
     var applyLink : String = "",
     var contact : String = "",
     var etc : String = "",
 
-    var selectCtgIndex : Int = 1,
-    var selectPlaceIndex : Int = 1,
-    var selectPartIndex : Int = 1,
+    var ctg : Int = 1,
+    var place : Int = 1,
+    var part : Int = 1,
 
-    var selectStartDate : String = "",
-    var selectEndDate : String = "",
+    var startDate : String = "",
+    var endDate : String = "",
 
-    var showStartCalendar : Boolean = false,
-    var showEndCalendar : Boolean = false
+    var showStart : Boolean = false,
+    var showEnd : Boolean = false
 )

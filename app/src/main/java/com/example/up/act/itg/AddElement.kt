@@ -43,6 +43,7 @@ import com.example.up.ui.theme.FontDarkGray
 fun AddElement(
     title : String,
     onValueChange : (Any) -> Unit,
+    modifier : Modifier,
 
     value : String? = null,
     holder : String? = null,
@@ -75,7 +76,8 @@ fun AddElement(
             holder = holder,
             addDp = 4,
             minusFontSize = 4,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            modifier = modifier
         )
     } else if(startDate != null && endDate != null){
         Row(modifier = Modifier
@@ -87,7 +89,8 @@ fun AddElement(
             ) {
                 onValueChange(true)
             }
-            Text(
+            Text( modifier = Modifier
+                .padding(horizontal = 4.dp),
                 text = "~",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Medium,
@@ -164,6 +167,7 @@ fun ItemGridView(
 fun CustomTextField(value : String,
                     onValueChange : (String) -> Unit,
                     holder : String,
+                    modifier : Modifier,
                     interactionSource: MutableInteractionSource =
                         remember { MutableInteractionSource() },
                     addDp : Int = 0,
@@ -174,7 +178,7 @@ fun CustomTextField(value : String,
     BasicTextField(
         value = value ,
         onValueChange = onValueChange,
-        modifier = Modifier
+        modifier = modifier
             .padding(top = (4+topAddDp).dp, start = (24 + addDp).dp, end = (24 + addDp).dp)
             .fillMaxWidth()
             .wrapContentHeight()
@@ -183,7 +187,8 @@ fun CustomTextField(value : String,
             fontSize = (20-minusFontSize).sp,
             fontWeight = fontWeight,
             color = Color.Black
-        )
+        ),
+        singleLine = false
     ) {
         TextFieldDefaults.DecorationBox(
             value = value,

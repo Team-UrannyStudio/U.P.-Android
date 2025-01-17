@@ -24,22 +24,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.up.R
+import com.example.up.act.bar.TopBar
 
 @Composable
-fun Profile(modifier : Modifier = Modifier){
+fun Profile(modifier : Modifier = Modifier,
+            navController : NavHostController
+){
     Box(modifier = modifier
         .fillMaxSize()
     ){
         Column(modifier = Modifier
-            .padding(start = 24.dp, top = 16.dp, end = 24.dp)
             .fillMaxWidth()
         ){
-            Image( modifier = Modifier
-                .size(40.dp),
-                painter = painterResource(id = R.drawable.up_logo),
-                contentDescription = "U.P."
-            )
+            TopBar(0, navController)
+
             Box(modifier = Modifier
                 .padding(top = 24.dp)
                 .size(150.dp)
@@ -136,5 +137,6 @@ fun ProfileElement(
 @Preview(showBackground = true)
 @Composable
 fun ShowProfile(){
-    Profile(Modifier)
+    val navController = rememberNavController()
+    Profile(Modifier, navController)
 }

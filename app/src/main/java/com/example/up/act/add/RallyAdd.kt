@@ -22,71 +22,83 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.compose.LifecycleStartStopEffectScope
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.up.act.bar.TopBar
 import com.example.up.act.itg.AddElement
 import com.example.up.act.itg.CustomTextField
 import com.example.up.act.itg.DatePickerField
 import com.example.up.data.LstInfo
+import com.example.up.data.cls.main.vm.rally.RallyAddEnum
+import com.example.up.data.cls.main.vm.rally.RallyAddVM
 import com.example.up.ui.theme.FontDarkGray
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.TimeZone
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RallyAddView(){
+fun RallyAddView(navController: NavHostController){
+    val viewModel : RallyAddVM = viewModel()
+
+    val state by viewModel.state.collectAsState()
 
     val scrollState = rememberScrollState()
+    val coroutineScope = rememberCoroutineScope()
 
-    var title by remember{ mutableStateOf("") }
-    var master by remember{ mutableStateOf("") }
-    var apply by remember{ mutableStateOf("") }
-    var cost by remember{ mutableStateOf("") }
-    var price by remember{ mutableStateOf("") }
-    var homePageLink by remember{ mutableStateOf("") }
-    var applyLink by remember{ mutableStateOf("") }
-    var contact by remember{ mutableStateOf("") }
-    var etc by remember{ mutableStateOf("") }
-
-    var selectCtgIndex by remember{ mutableIntStateOf(1) }
-    var selectPlaceIndex by remember{ mutableIntStateOf(1) }
-    var selectPartIndex by remember{ mutableIntStateOf(1) }
-
-    var selectStartDate by remember{ mutableStateOf("") }
-    var selectEndDate by remember{ mutableStateOf("") }
-
-    var showStartCalendar by remember { mutableStateOf(false) }
-    var showEndCalendar by remember { mutableStateOf(false) }
+    val todayTime = System.currentTimeMillis()
 
     // DatePicker
-    val startDatePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
-    val endDatePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
+    val startDatePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = todayTime,
+        initialDisplayMode = DisplayMode.Picker
+    )
+    val endDatePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = todayTime,
+        initialDisplayMode = DisplayMode.Picker
+    )
 
-    if (showStartCalendar){
+    if (state.showStart){
         DatePickerField(
-            onDismiss = { showStartCalendar = false },
+            onDismiss = { viewModel.updateState(RallyAddEnum.SHOW_START, false) },
             onConfirm = {
-                selectStartDate = it
+                viewModel.updateState(RallyAddEnum.START_DATE, it)
             },
             datePickerState = startDatePickerState
         )
     }
 
-    if (showEndCalendar && !showStartCalendar){
+    if (state.showEnd && !state.showStart){
         DatePickerField(
-            onDismiss = { showEndCalendar = false },
+            onDismiss = { viewModel.updateState(RallyAddEnum.SHOW_END, false) },
             onConfirm = {
-                selectEndDate = it
+                viewModel.updateState(RallyAddEnum.END_DATE, it)
             },
             datePickerState = endDatePickerState
         )
@@ -99,6 +111,7 @@ fun RallyAddView(){
                 .fillMaxWidth()
                 .height(60.dp),
                 onClick = {
+                    navController.popBackStack()
                     Log.d("Click", "Clear")
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -120,6 +133,9 @@ fun RallyAddView(){
             .fillMaxSize()
             .verticalScroll(scrollState)
         ) {
+
+            TopBar(navController = navController, bool = 1)
+
             Box(modifier = Modifier
                 .padding(top = 24.dp, start = 24.dp, end = 24.dp, bottom = 20.dp)
                 .fillMaxWidth()
@@ -133,10 +149,13 @@ fun RallyAddView(){
                 )
             }
             CustomTextField(
-                value = title,
-                onValueChange = { title = it },
+                value = state.title,
+                onValueChange = {
+                    viewModel.updateState(RallyAddEnum.TITLE, it)
+                },
                 holder = "제목을 입력하기...",
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
             )
             HorizontalDivider(modifier = Modifier
                 .padding(top = 4.dp, start = 24.dp, end = 24.dp)
@@ -146,81 +165,93 @@ fun RallyAddView(){
             )
             AddElement(
                 title = "카테고리",
-                onValueChange = { selectCtgIndex = it as Int },
-                selectIndex = selectCtgIndex,
-                categoryLst = LstInfo.rallyNGetCtgLst
+                onValueChange = { viewModel.updateState(RallyAddEnum.CTG, it as Int) },
+                selectIndex = state.ctg,
+                categoryLst = LstInfo.rallyNGetCtgLst,
+                modifier = Modifier
             )
             AddElement(
                 title = "주최자",
-                value = master,
-                onValueChange = { master = it as String},
-                holder = "주최자 입력하기..."
+                value = state.master,
+                onValueChange = { viewModel.updateState(RallyAddEnum.MASTER, it as String) },
+                holder = "주최자 입력하기...",
+                modifier = Modifier
             )
             AddElement(
                 title = "참가 대상",
-                onValueChange = {selectPartIndex = it as Int},
-                selectIndex = selectPartIndex,
-                categoryLst = LstInfo.participantLst
+                onValueChange = { viewModel.updateState(RallyAddEnum.PART, it as Int) },
+                selectIndex = state.part,
+                categoryLst = LstInfo.participantLst,
+                modifier = Modifier
             )
             AddElement(
                 title = "접수 기간",
                 onValueChange = {
                     if(it as Boolean){
-                        showStartCalendar = true
+                        viewModel.updateState(RallyAddEnum.SHOW_START, true)
                     } else {
-                        showEndCalendar = true
+                        viewModel.updateState(RallyAddEnum.SHOW_END, true)
                     }
                 },
-                startDate = selectStartDate,
-                endDate = selectEndDate
+                startDate = state.startDate,
+                endDate = state.endDate,
+                modifier = Modifier
             )
             AddElement(
                 title = "접수 방법",
-                value = apply,
-                onValueChange = {apply = (it as String)},
-                holder = "접수 방법 입력하기..."
+                value = state.apply,
+                onValueChange = {viewModel.updateState(RallyAddEnum.APPLY, it as String)},
+                holder = "접수 방법 입력하기...",
+                modifier = Modifier
             )
             AddElement(
                 title = "참가 비용",
-                value = cost,
-                onValueChange = {cost = (it as String)},
-                holder = "참가 비용 입력하기..."
+                value = state.cost,
+                onValueChange = {viewModel.updateState(RallyAddEnum.COST, it as String)},
+                holder = "참가 비용 입력하기...",
+                modifier = Modifier
             )
             AddElement(
                 title = "해당 지역",
-                onValueChange = { selectPlaceIndex = (it as Int)},
-                selectIndex = selectPlaceIndex,
-                categoryLst = LstInfo.placeLst
+                onValueChange = { viewModel.updateState(RallyAddEnum.PLACE, it as Int)},
+                selectIndex = state.place,
+                categoryLst = LstInfo.placeLst,
+                modifier = Modifier
             )
             AddElement(
                 title = "시상 내역",
-                value = price,
-                onValueChange = {price = (it as String)},
-                holder = "시상 내역 입력하기..."
+                value = state.price,
+                onValueChange = {viewModel.updateState(RallyAddEnum.PRICE, it as String)},
+                holder = "시상 내역 입력하기...",
+                modifier = Modifier
             )
             AddElement(
                 title = "홈페이지 링크",
-                value = homePageLink,
-                onValueChange = {homePageLink = (it as String)},
-                holder = "링크 삽입하기..."
+                value = state.homeLink,
+                onValueChange = {viewModel.updateState(RallyAddEnum.HOME_LINK, it as String)},
+                holder = "링크 삽입하기...",
+                modifier = Modifier
             )
             AddElement(
                 title = "접수 링크",
-                value = applyLink,
-                onValueChange = {applyLink = (it as String)},
-                holder = "링크 삽입하기..."
+                value = state.homeLink,
+                onValueChange = {viewModel.updateState(RallyAddEnum.APPLY_LINK, it as String)},
+                holder = "링크 삽입하기...",
+                modifier = Modifier
             )
             AddElement(
                 title = "문의처",
-                value = contact,
-                onValueChange = {contact = (it as String)},
-                holder = "문의처 입력하기..."
+                value = state.contact,
+                onValueChange = {viewModel.updateState(RallyAddEnum.CONTACT, it as String)},
+                holder = "문의처 입력하기...",
+                modifier = Modifier
             )
             AddElement(
                 title = "기타 정보",
-                value = etc,
-                onValueChange = {etc = (it as String)},
-                holder = "기타 정보 입력하기..."
+                value = state.etc,
+                onValueChange = {viewModel.updateState(RallyAddEnum.ETC, it as String)},
+                holder = "기타 정보 입력하기...",
+                modifier = Modifier
             )
         }      
     }
@@ -230,5 +261,5 @@ fun RallyAddView(){
 @Preview(showBackground = true)
 @Composable
 fun ShowRallyAddView(){
-    RallyAddView()
+    RallyAddView(rememberNavController())
 }

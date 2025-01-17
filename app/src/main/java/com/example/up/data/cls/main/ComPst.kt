@@ -6,6 +6,7 @@ import com.example.up.data.cls.cmt.Cmt
 import java.time.LocalDateTime
 
 data class ComPst(
+    val id : Long,
     val title : String,
     val category: String,
     val imageUrl : String,
@@ -21,6 +22,7 @@ data class ComPst(
         createTime = createTime,
         communityBody = body
     )
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun toDataLst(): List<PostElementData> = listOf(
         PostElementData(
@@ -28,9 +30,11 @@ data class ComPst(
             body = if(!(cmtLst.size == 0)) cmtLst[0].body else "댓글이 없습니다",
             imgUrl = if(!(cmtLst.size == 0)) cmtLst[0].imgUrl else null
         ),
-        PostElementData(
-            title = "다른 글",
-            body = ""
-        )
     )
+
+    override fun toCmtLst(): List<Cmt> {
+        return cmtLst
+    }
+
+    fun toComPst() : ComPst = ComPst(id, title, category, imageUrl, body, master, cmtLst, createTime)
 }

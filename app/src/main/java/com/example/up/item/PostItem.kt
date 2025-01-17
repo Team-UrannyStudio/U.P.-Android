@@ -3,6 +3,7 @@ package com.example.up.item
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.up.data.cls.cmt.Cmt
 import com.example.up.ui.theme.FontDarkGray
+import com.example.up.ui.theme.FontGray
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -35,24 +37,41 @@ fun PostItem(
     category: String,
     dateTime: LocalDateTime,
     user: String,
-    cmtLst: List<Cmt>
+    cmtLst: List<Cmt>,
+    isCurrent : Boolean = false,
+    onClick : () -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp))
-            .background(Color.White)
-            .padding(12.dp)
+        modifier = if(isCurrent){
+            Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(4.dp))
+                .background(
+                    FontGray,
+                    shape = RoundedCornerShape(4.dp)
+                )
+            } else {
+            Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(4.dp))
+                .background(
+                    Color.White,
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .clickable { onClick() }
+        }
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top // Row 내부 요소를 위쪽에 정렬
         ) {
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(end = 8.dp)
+                    .padding(end = 8.dp),
             ) {
                 Text(
                     text = title,
@@ -62,9 +81,9 @@ fun PostItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Row(
-                    modifier = Modifier.padding(top = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                Row(modifier = Modifier,
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
                         text = category,
@@ -74,7 +93,6 @@ fun PostItem(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Spacer(modifier = Modifier.width(8.dp)) // Add space between elements
                     Text(
                         text = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                         fontSize = 12.sp,
@@ -83,7 +101,6 @@ fun PostItem(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = user,
                         fontSize = 12.sp,
@@ -114,5 +131,7 @@ fun ShowPostItem(){
         dateTime = LocalDateTime.now() ,
         user = "Uranny",
         cmtLst = ArrayList()
-    )
+    ){
+
+    }
 }

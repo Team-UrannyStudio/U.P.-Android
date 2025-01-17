@@ -5,21 +5,31 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.up.act.itg.PostItgView
 import com.example.up.data.LstInfo
 import com.example.up.data.cls.main.GetPst
+import com.example.up.data.cls.main.vm.main.MainViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun GetPost(
     modifier : Modifier,
-    pst : GetPst
+    pst : GetPst,
+    navController: NavHostController,
+    parentNavController: NavHostController,
+    mainVM : MainViewModel = MainViewModel()
 ){
     PostItgView(
         modifier = modifier,
-        postData = pst
+        postData = pst,
+        navController = navController,
+        parentNavController = parentNavController,
+        mainVM = mainVM
     )
 }
 
@@ -27,5 +37,5 @@ fun GetPost(
 @Preview(showBackground = true)
 @Composable
 fun ShowGetPost(){
-    GetPost(modifier = Modifier, LstInfo.getLst[0])
+    GetPost(modifier = Modifier, LstInfo.getLst[0], rememberNavController(), rememberNavController())
 }

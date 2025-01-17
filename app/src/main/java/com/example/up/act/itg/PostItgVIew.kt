@@ -39,12 +39,21 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.up.act.bar.TopBar
 import com.example.up.data.LstInfo
+import com.example.up.data.cls.cmt.Cmt
+import com.example.up.data.cls.main.ComPst
+import com.example.up.data.cls.main.GetPst
 import com.example.up.data.cls.main.PostBasic
 import com.example.up.data.cls.main.PostData
 import com.example.up.data.cls.main.PostElementData
+import com.example.up.data.cls.main.vm.main.MainViewModel
 import com.example.up.item.CategoryItem
+import com.example.up.item.CmtViewItem
 import com.example.up.item.PostCmtItem
+import com.example.up.item.PostItem
 import com.example.up.ui.theme.FontDarkGray
 import com.example.up.ui.theme.UPTheme
 import java.time.LocalDateTime
@@ -54,7 +63,10 @@ import java.util.Locale
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PostItgView (modifier : Modifier,
-                 postData: PostData
+                 postData: PostData,
+                 navController : NavHostController,
+                 parentNavController : NavHostController = rememberNavController(),
+                 mainVM : MainViewModel = MainViewModel()
 ) {
     val state = rememberScrollState()
     val elementDataLst = postData.toDataLst()
@@ -64,15 +76,32 @@ fun PostItgView (modifier : Modifier,
         .verticalScroll(state)
         .fillMaxSize()
     ) {
+        TopBar(1,
+            navController
+        )
         if(data.communityBody.isNullOrEmpty()){
             RNGPostItgView(
-                data = data,
+                postData = postData,
+                parentNavController = parentNavController,
                 elementDataLst = elementDataLst
             )
         } else {
+            val comPst = if (postData is ComPst){
+                postData.toComPst()
+            } else{
+                throw IllegalArgumentException("postData는 ComPst 타입이어야 합니다.")
+            }
             ComPostItgView(
                 data = data,
-                elementDataLst = elementDataLst
+                pst = comPst,
+                elementDataLst = elementDataLst,
+                parentNavController = parentNavController,
+                onClick = {
+                    val nxtComPst = LstInfo.comPostLst.indexOf(it)
+                    navController.navigate("ComPost/${nxtComPst}"){
+                        restoreState = true
+                    }
+                }
             )
         }
     }
@@ -82,13 +111,26 @@ fun PostItgView (modifier : Modifier,
 @Composable
 fun ComPostItgView(
     data : PostBasic,
-    elementDataLst: List<PostElementData>
+    pst : ComPst,
+    parentNavController : NavHostController,
+    elementDataLst : List<PostElementData>,
+    onClick : (ComPst) -> Unit
 ){
+    val cmtCount = pst.cmtLst.size
+    val curIndex = LstInfo.comPostLst.indexOf(pst)
+    val maxIndex = LstInfo.comPostLst.size-1
+
+    val otherPstLst = otherPstLst(
+        pstLst = LstInfo.comPostLst,
+        curIndex = curIndex,
+        maxIndex = maxIndex
+    )
+
     PostHeader(data = data, community = true)
 
     Box(modifier = Modifier
-        .padding(top = 20.dp, start = 28.dp)
-        .width(268.dp)
+        .padding(top = 20.dp, start = 28.dp, end = 28.dp)
+        .fillMaxWidth()
         .background(Color.White)
         .clip(RoundedCornerShape(4.dp))
     ){
@@ -102,7 +144,7 @@ fun ComPostItgView(
     )
     Text(modifier = Modifier
         .fillMaxWidth()
-        .padding(top = 16.dp, start = 24.dp, end = 24.dp),
+        .padding(start = 24.dp, end = 24.dp),
         text = data.communityBody!!,
         fontSize = 12.sp,
         fontWeight = FontWeight.Medium,
@@ -122,8 +164,9 @@ fun ComPostItgView(
     ) {
         Text(modifier = Modifier
             .padding(start = 4.dp),
-            text = "댓글",
-            fontSize = 20.sp
+            text = if(cmtCount != 0)"댓글 ${cmtCount}개" else "댓글",
+            fontSize = 20.sp,
+            color = Color.Black
         )
         Icon(modifier = Modifier
             .padding(end = 4.dp),
@@ -131,14 +174,61 @@ fun ComPostItgView(
             contentDescription = "Fav"
         )
     }
+    if(pst.cmtLst.size > 0){
+        PostCmtItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp, start = 24.dp, end = 24.dp),
+            imageUrl = pst.cmtLst[0].imgUrl,
+            body = pst.cmtLst[0].body
+        ){
+            parentNavController.navigate("CMT/C/${pst.id}")
+        }
+    } else{
+        PostCmtItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp, start = 24.dp, end = 24.dp),
+            imageUrl = "defalut",
+            body = "댓글이 없습니다,",
+            showImg = false
+        ){
+            parentNavController.navigate("CMT/C/${pst.id}")
+        }
+    }
+    Text(modifier = Modifier
+        .padding(start = 28.dp, top = 28.dp),
+        text = "다른글",
+        fontSize = 20.sp,
+        color = Color.Black
+    )
+    Column(modifier = Modifier
+        .padding(top = 8.dp, start = 24.dp, end =24.dp, bottom = 18.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        otherPstLst.forEachIndexed { index, comPst ->
+            PostItem(title = comPst.title,
+                category = comPst.category,
+                dateTime = comPst.createTime,
+                user = comPst.master,
+                cmtLst = comPst.cmtLst,
+                isCurrent = pst.id == comPst.id
+            ) {
+                onClick(comPst)
+            }
+        }
+    }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RNGPostItgView(
-    data : PostBasic,
+    postData : PostData,
+    parentNavController: NavHostController,
     elementDataLst : List<PostElementData>
 ){
+    val data = postData.toData()
+
     Box(modifier = Modifier
         .padding(top = 24.dp, start = 24.dp, end = 24.dp)
         .fillMaxWidth()
@@ -158,7 +248,8 @@ fun RNGPostItgView(
         verticalAlignment = Alignment.CenterVertically
     ) {
         CategoryItem(
-            text = data.category
+            text = data.category,
+            isClick = false
         ) { item ->
             Log.d("Click", "Tag")
         }
@@ -175,11 +266,46 @@ fun RNGPostItgView(
         .height(24.dp)
     )
     elementDataLst.forEach { i ->
-        PostElement(i)
+        PostElement(
+            i,
+            parentNavController
+        )
         Spacer(modifier = Modifier
             .fillMaxWidth()
             .height(28.dp)
         )
+    }
+
+    if(postData is GetPst){
+        val cmtLst = postData.cmtLst
+        Text(modifier = Modifier
+            .padding(start = 28.dp),
+            text = "댓글${if (!(cmtLst.size == 0)) " ${cmtLst.size}개" else ""}",
+            fontSize = 20.sp,
+            color = Color.Black
+        )
+        if(cmtLst.size > 0){
+            PostCmtItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp, start = 28.dp, end = 28.dp, bottom = 20.dp),
+                imageUrl = cmtLst[0].imgUrl,
+                body = cmtLst[0].body
+            ){
+                parentNavController.navigate("CMT/G/${postData.id}")
+            }
+        } else{
+            PostCmtItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp, start = 28.dp, end = 28.dp, bottom = 20.dp),
+                imageUrl = "defalut",
+                body = "댓글이 없습니다,",
+                showImg = false
+            ){
+                parentNavController.navigate("CMT/G/${postData.id}")
+            }
+        }
     }
 }
 
@@ -220,7 +346,8 @@ fun HyperLinkText(link : String){
 }
 
 @Composable
-fun PostElement( element : PostElementData
+fun PostElement(element : PostElementData,
+                parentNavController: NavHostController
 ){
     Column(modifier = Modifier
         .padding(start = 28.dp, end = 28.dp)
@@ -241,13 +368,6 @@ fun PostElement( element : PostElementData
             element.hyper -> {
                 HyperLinkText(link = element.body)
             }
-            !(element.imgUrl.isNullOrEmpty()) -> {
-                PostCmtItem(
-                    modifier = Modifier,
-                    imageUrl = element.imgUrl,
-                    body = element.body
-                )
-            }
             else -> {
                 Text(modifier = Modifier,
                     text = element.body,
@@ -265,8 +385,8 @@ fun PostElement( element : PostElementData
 fun PostHeader(data: PostBasic, community : Boolean = false){
     if(community){
         Text(modifier = Modifier
-            .padding(top = 16.dp, start = 24.dp, end = 24.dp),
-            text = "[${data.category}] "+data.title,
+            .padding(top = 32.dp, start = 24.dp, end = 24.dp),
+            text = "[${data.category}] "+ data.title,
             color = Color.Black,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
@@ -305,6 +425,25 @@ fun PostHeader(data: PostBasic, community : Boolean = false){
     }
 }
 
+fun otherPstLst(pstLst : List<ComPst>,
+                curIndex : Int,
+                maxIndex : Int
+) : List<ComPst> {
+    val otherPstLst = arrayListOf<ComPst>()
+
+    if(curIndex > 0){
+        otherPstLst.add(pstLst[curIndex-1])
+    }
+
+    otherPstLst.add(pstLst[curIndex])
+
+    if(curIndex < maxIndex){
+        otherPstLst.add(pstLst[curIndex+1])
+    }
+
+    return otherPstLst
+}
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
@@ -312,7 +451,8 @@ fun ShowPostItemView(){
     val postData = LstInfo.comPostLst.firstOrNull() ?: return
     UPTheme {
         PostItgView(modifier = Modifier,
-            postData
+            postData,
+            rememberNavController()
         )
     }
 }

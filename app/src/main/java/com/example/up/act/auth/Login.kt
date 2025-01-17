@@ -1,6 +1,7 @@
 package com.example.up.act.auth
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,25 +15,32 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.up.R
+import com.example.up.data.cls.main.vm.auth.AuthVM
+import com.example.up.data.cls.main.vm.auth.AuthValue.*
 
 @Composable
-fun Login(modifier : Modifier = Modifier) {
-
-    var id by remember { mutableStateOf("") }
-    var pw by remember { mutableStateOf("") }
+fun Login(modifier : Modifier = Modifier,
+          navController : NavHostController,
+          authVM : AuthVM
+) {
+    val context = LocalContext.current
+    val id by authVM.id.collectAsState()
+    val pw by authVM.pw.collectAsState()
 
     Box(modifier = Modifier
         .padding(top = 16.dp, start = 24.dp, end = 24.dp, bottom = 24.dp)
@@ -55,12 +63,12 @@ fun Login(modifier : Modifier = Modifier) {
             CustomAuthTextField(
                 title = "id",
                 value = id,
-                onValueChange = {id = it}
+                onValueChange = {authVM.updateValue(ID, it)}
             )
             CustomAuthTextField(
                 title = "pw",
                 value = pw,
-                onValueChange = {pw = it}
+                onValueChange = {authVM.updateValue(PW, it)}
             )
         }
         Button(modifier = Modifier
@@ -68,7 +76,18 @@ fun Login(modifier : Modifier = Modifier) {
             .fillMaxWidth()
             .height(60.dp),
             onClick = {
-                Log.d("Click", "Clear")
+                if(id == "ojm67800" && pw == "12345678"){
+                    listOf(ID, PW).forEach { item ->
+                        authVM.resetValue(item)
+                    }
+                    navController.navigate("MAIN") {
+                        popUpTo(navController.graph.startDestinationId) { inclusive = true } // 스택 제거
+                        launchSingleTop = true // 동일 화면 중복 방지
+                    }
+                    Log.d("Click", "Clear")
+                } else {
+                    Toast.makeText(context, "아이디 또는 비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
@@ -79,7 +98,7 @@ fun Login(modifier : Modifier = Modifier) {
             Text(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                text = "완료하기"
+                text = "로그인"
             )
         }
     }
@@ -88,5 +107,7 @@ fun Login(modifier : Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun ShowLogin(){
-    Login()
+    val navController = rememberNavController()
+    val authVM : AuthVM = viewModel()
+    Login(navController = navController, authVM = authVM)
 }

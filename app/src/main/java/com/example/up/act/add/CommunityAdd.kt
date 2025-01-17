@@ -32,6 +32,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.up.act.bar.TopBar
 import com.example.up.act.itg.AddElement
 import com.example.up.act.itg.CustomTextField
 import com.example.up.data.LstInfo
@@ -39,7 +42,7 @@ import com.example.up.ui.theme.FontDarkGray
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CommunityAddView(){
+fun CommunityAddView(navController: NavHostController){
 
     val scrollState = rememberScrollState()
 
@@ -54,6 +57,7 @@ fun CommunityAddView(){
                 .fillMaxWidth()
                 .height(60.dp),
                 onClick = {
+                    navController.popBackStack()
                     Log.d("Click", "Clear")
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -75,12 +79,15 @@ fun CommunityAddView(){
             .fillMaxSize()
             .verticalScroll(scrollState)
         ) {
+            TopBar(navController = navController, bool = 1)
+
             CustomTextField(
                 value = title,
                 onValueChange = { title = it },
                 holder = "제목 입력하기...",
                 fontWeight = FontWeight.Bold,
-                topAddDp = 28
+                topAddDp = 28,
+                modifier = Modifier
             )
             HorizontalDivider(modifier = Modifier
                 .padding(top = 4.dp, start = 24.dp, end = 24.dp)
@@ -104,7 +111,8 @@ fun CommunityAddView(){
                 title = "카테고리",
                 onValueChange = { selectCtgIndex = it as Int },
                 selectIndex = selectCtgIndex,
-                categoryLst = LstInfo.comCtgLst
+                categoryLst = LstInfo.comCtgLst,
+                modifier = Modifier
             )
             CustomTextField(
                 value = body,
@@ -112,7 +120,8 @@ fun CommunityAddView(){
                 holder = "내용 입력하기...",
                 fontWeight = FontWeight.Bold,
                 minusFontSize = 4,
-                topAddDp = 24
+                topAddDp = 24,
+                modifier = Modifier
             )
             HorizontalDivider(modifier = Modifier
                 .padding(top = 8.dp, start = 24.dp, end = 24.dp)
@@ -128,5 +137,5 @@ fun CommunityAddView(){
 @Preview(showBackground = true)
 @Composable
 fun ShowCommunityAddView(){
-    CommunityAddView()
+    CommunityAddView(rememberNavController())
 }

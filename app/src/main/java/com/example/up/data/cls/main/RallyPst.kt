@@ -1,9 +1,11 @@
 package com.example.up.data.cls.main
 
+import com.example.up.data.cls.cmt.Cmt
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class RallyPst(
+    val id : Long,
     val title: String,
     val category: String,
     val imgUrl: String, // imgurl
@@ -39,4 +41,8 @@ data class RallyPst(
         PostElementData(title = "문의처", body = contact),
         PostElementData(title = "기타 정보", body = etc)
     )
+
+    override fun toCmtLst(): List<Cmt> {
+        return listOf()
+    }
 }

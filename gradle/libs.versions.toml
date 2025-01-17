@@ -12,6 +12,10 @@ navigationCompose = "2.9.0-alpha04"
 compose = "1.0.0-beta01"
 glide = "5.0.0-rc01"
 material = "1.12.0"
+materialVersion = "1.8.0-alpha07"
+ui = "1.8.0-alpha07"
+runtimeLivedata = "1.7.6"
+media3CommonKtx = "1.5.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +36,10 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 compose = { group = "com.github.bumptech.glide", name = "compose", version.ref = "compose" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-material = { group = "androidx.compose.material", name = "material", version.ref = "materialVersion" }
+ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
+androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
+androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
